@@ -12,6 +12,9 @@ class Item(db.Model):
     name = db.Column(db.Text, nullable=False)
     location = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
+    video = db.Column(db.Text, nullable=False)
+    preso = db.Column(db.Text, nullable=False)
+    folder = db.Column(db.Text, nullable=False)
     active = db.Column(db.Boolean, default=True, nullable=False)
     viewed = db.relationship('Annotator', secondary=view_table)
     prioritized = db.Column(db.Boolean, default=False, nullable=False)
@@ -19,10 +22,13 @@ class Item(db.Model):
     mu = db.Column(db.Float)
     sigma_sq = db.Column(db.Float)
 
-    def __init__(self, name, location, description):
+    def __init__(self, name, location, description, video="None", preso="None", folder="None"):
         self.name = name
         self.location = location
         self.description = description
+        self.video = video
+        self.preso = preso
+        self.folder = folder
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
 
