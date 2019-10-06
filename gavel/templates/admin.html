@@ -28,6 +28,9 @@
           <th data-sort-method="caseInsensitiveSort">Name</th>
           <th data-sort-method="caseInsensitiveSort">Location</th>
           <th data-sort-method="caseInsensitiveSort">Description</th>
+          <th data-sort-method="caseInsensitiveSort">Video</th>
+          <th data-sort-method="caseInsensitiveSort">Presentation</th>
+          <th data-sort-method="caseInsensitiveSort">Folder</th>
           <th class="sort-default" data-sort-method="number" data-sort-order="desc">Mu</th>
           <th data-sort-method="number">Sigma Squared</th>
           <th data-sort-method="number">Votes</th>
@@ -45,6 +48,9 @@
           <td>{{ item.name | safe }}</td>
           <td>{{ item.location | safe }}</td>
           <td class="preserve-formatting">{{ item.description | safe }}</td>
+          <td><a href="{{ item.video | safe }}">Video</a></td>
+          <td><a href="{{ item.preso | safe }}">Presentation</a></td>
+          <td><a href="{{ item.folder | safe }}">Folder</a></td>
           <td>{{ item.mu | round(4) }}</td>
           <td>{{ item.sigma_sq | round(4) }}</td>
           <td>{{ item_counts.get(item.id, 0) }}</td>
@@ -143,7 +149,7 @@
     <h2>Add Projects</h2>
   </div>
   <div class="info">
-    <p>Add name, location, description (CSV format)</p>
+    <p>Add name, location, description, link to video, link to presentation, link to folder (CSV format)</p>
     <textarea name="data" form="item_form"></textarea>
     <form action="/admin/item" method="post" id="item_form" enctype="multipart/form-data">
       <div class="upload-container">
