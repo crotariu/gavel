@@ -1,6 +1,8 @@
 from gavel.models import db
 import gavel.crowd_bt as crowd_bt
 from sqlalchemy.orm.exc import NoResultFound
+from urllib.parse import urlparse
+
 
 view_table = db.Table('view',
     db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
@@ -31,6 +33,20 @@ class Item(db.Model):
         self.folder = folder
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
+
+        # Parse URL, if it's a Google file assume it's a video and reformat the URL
+        o = urlparse(video)
+        # If file link path starts with `/open`
+        if o.path.startswith('/open'):
+            id = o.query
+            self.video = 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+        # Sharing link
+        elif o.path.startswith('/file'):
+            paths = o.path.split('/')
+            id = paths[3]
+            self.video = 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+        else:
+            self.video = video
 
     @classmethod
     def by_id(cls, uid):
