@@ -2,7 +2,8 @@
   <h2>{{ item.name | safe }}</h2>
   <p class="preserve-formatting">{{ item.description | safe }}</p>
   <p><strong>Location:     </strong>{{ item.location | safe }}</p>
-  <p><strong>Video:        </strong><a href="{{ item.video | safe }}">Link</a>
-  <p><strong>Presentation: </strong><a href="{{ item.preso | safe }}">Link</a>
-  <p><strong>Folder:       </strong><a href="{{ item.folder | safe }}">Folder</a>
+  <p><strong>Video:        </strong><a href="{{ item.video | safe }}">Link</a></p>
+  <p><strong>Presentation: </strong><a href="{{ item.preso | safe }}">Link</a></p>
+  <p><strong>Folder:       </strong><a href="{{ item.folder | safe }}">Folder</a></p>
+  <p><iframe src="{{ item.video | safe }}" frameborder="0" allowfullscreen></iframe></p>
 </div>
