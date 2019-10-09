@@ -58,7 +58,7 @@ def item():
             # validate data
             for index, row in enumerate(data):
                 if len(row) != 6:
-                    return utils.user_error('Bad data: row %d has %d elements (expecting 3)' % (index + 1, len(row)))
+                    return utils.user_error('Bad data: row %d has %d elements (expecting 6)' % (index + 1, len(row)))
             for row in data:
                 _item = Item(*row)
                 db.session.add(_item)
