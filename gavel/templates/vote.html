@@ -1,25 +1,26 @@
-{% extends "layout.html" %}
-{% block title %}Vote{% endblock %}
-{% block content %}
-<div class="item">
-  <div class="banner-tight" id="previous-header">
-    <h1>Previous</h1>
-  </div>
-  <div id="previous-body">
-    {% with item=prev %}
-    {% include "_item.html" %}
-    {% endwith %}
-  </div>
-</div>
+{% extends 'bootstrap/base.html' %}
 
-<div class="item">
-  <div class="banner-tight" id="current-header">
-    <h1>Current</h1>
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
+
+{% block title %}Vote{% endblock %}
+
+{% block content %}
+<form action="/vote" method="post">
+<div class="container">
+  <div class="card-deck">
+
+      {% with item=next, btn_value="Current" %}
+      {% include "_item.html" %}
+      {% endwith %}
+
+      {% with item=prev, btn_value="Previous" %}
+      {% include "_item.html" %}
+      {% endwith %}
   </div>
-  <div id="current-body">
-    {% with item=next %}
-    {% include "_item.html" %}
-    {% endwith %}
+  <div class="pt-4">
+    <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block">
   </div>
 </div>
 

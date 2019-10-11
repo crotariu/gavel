@@ -4,7 +4,10 @@
 # details.
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
+
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 import gavel.settings as settings
 app.config['SQLALCHEMY_DATABASE_URI'] = settings.DB_URI
