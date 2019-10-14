@@ -1,23 +1,21 @@
 {% extends "layout.html" %}
 {% block title %}Start{% endblock %}
 {% block content %}
-<div class="item">
-  <div class="banner-tight">
-    <h1>Start</h1>
-  </div>
-  {% with item=item %}
-  {% include "_item.html" %}
-  {% endwith %}
-</div>
+<form action="/begin" method="post">
+  <div class="container">
+    <div class="card-deck">
 
-<div class="item">
-  <div class="info">
-    <form action="/begin" method="post">
-      <input type="submit" name="action" value="Skip" id="vote-skip" class="button-full">
-      <input type="submit" name="action" value="Done" id="vote-done" class="button-full button-gap">
-      <input type="hidden" name="item_id" value="{{ item.id }}">
-      <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
-    </form>
+      {% with item=item, btn_value="Done"  %}
+      {% include "_item.html" %}
+      {% endwith %}
+
+    </div>
+      <div class="pt-4">
+      <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block">
+    </div>
   </div>
-</div>
+
+  <input type="hidden" name="item_id" value="{{ item.id }}">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+</form>
 {% endblock %}

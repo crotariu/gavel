@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Stylesheets -->
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/vendor/normalize.css') }}">
-    {% assets "scss_all" %}
-    <link rel=stylesheet type=text/css href="{{ ASSET_URL }}">
-    {% endassets %}
+{% extends 'bootstrap/base.html' %}
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/vendor/normalize.css') }}">
+{% assets "scss_all" %}
+<link rel=stylesheet type=text/css href="{{ ASSET_URL }}">
+{% endassets %}
+{% endblock %}
 
-    <!-- Fonts -->
-    <link href="//fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet" type="text/css">
-    <link href="//fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,700" rel="stylesheet" type="text/css">
-
-    <!-- Enable responsiveness on mobile devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-
-    <title>{% block title %}{% endblock %} &middot; Gavel</title>
-    {% block head %}
-    {% endblock %}
-  </head>
-  <body>
-    <div id="content">
-      {% block content %}
-      {% endblock %}
-    </div>
-    <div id="footer">
-      <!-- Please don't remove this -->
-      <p>Powered by <a href="https://github.com/anishathalye/gavel" class="colored">Gavel</a></p>
-    </div>
-    {% block end %}
-    {% endblock %}
-  </body>
-</html>
+{%- block content %}
+{{super()}}
+{%- block footer %}
+<!-- Please don't remove this -->
+      <footer>Powered by <a href="https://github.com/anishathalye/gavel" class="colored">Gavel</a></footer>
+{%- endblock footer %}
+{%- endblock content %}
