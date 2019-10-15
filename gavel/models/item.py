@@ -14,6 +14,7 @@ class Item(db.Model):
     name = db.Column(db.Text, nullable=False)
     location = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
+    category = db.Column(db.Text, nullable=False)
     video = db.Column(db.Text, nullable=False)
     preso = db.Column(db.Text, nullable=False)
     folder = db.Column(db.Text, nullable=False)
@@ -24,7 +25,7 @@ class Item(db.Model):
     mu = db.Column(db.Float)
     sigma_sq = db.Column(db.Float)
 
-    def __init__(self, name, location, description, video="None", preso="None", folder="None"):
+    def __init__(self, name, location, description, category="None", video="None", preso="None", folder="None"):
         self.name = name
         self.location = location
         self.description = description
@@ -33,6 +34,7 @@ class Item(db.Model):
         self.folder = folder
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
+        self.category = category
 
         # Parse URL, if it's a Google file assume it's a video and reformat the URL
         o = urlparse(video)
