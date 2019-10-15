@@ -27,6 +27,7 @@
           <th data-sort-method="number">Id</th>
           <th data-sort-method="caseInsensitiveSort">Name</th>
           <th data-sort-method="caseInsensitiveSort">Location</th>
+          <th data-sort-method="caseInsensitiveSort">Category</th>
           <th data-sort-method="caseInsensitiveSort">Description</th>
           <th data-sort-method="caseInsensitiveSort">Video</th>
           <th data-sort-method="caseInsensitiveSort">Presentation</th>
@@ -47,6 +48,7 @@
           <td><a href="{{ url_for('item_detail', item_id=item.id) }}" class="colored">{{ item.id }}</a></td>
           <td>{{ item.name | safe }}</td>
           <td>{{ item.location | safe }}</td>
+          <td>{{ item.category | safe }}</td>
           <td class="preserve-formatting">{{ item.description | safe }}</td>
           <td><a href="{{ item.video | safe }}">Video</a></td>
           <td><a href="{{ item.preso | safe }}">Presentation</a></td>
@@ -155,7 +157,7 @@
     <h2>Add Projects</h2>
   </div>
   <div class="info">
-    <p>Add name, location, description, link to video, link to presentation, link to folder (CSV format)</p>
+    <p>Add name, location, description, category, link to video, link to presentation, link to folder (CSV format)</p>
     <textarea name="data" form="item_form"></textarea>
     <form action="{{ url_for('item') }}" method="post" id="item_form" enctype="multipart/form-data">
       <div class="upload-container">
