@@ -130,7 +130,9 @@ def item_patch():
             item.name = request.form['name']
         if 'description' in request.form:
             item.description = request.form['description']
-        db.session.commit()
+        if 'video' in request.form:
+            item.video = request.form['video']
+    db.session.commit()
     with_retries(tx)
     return redirect(url_for('item_detail', item_id=item.id))
 
