@@ -4,7 +4,10 @@
 # details.
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
+
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 
 import gavel.settings as settings
 app.config['SQLALCHEMY_DATABASE_URI'] = settings.DB_URI
@@ -35,12 +38,3 @@ db.init_app(app)
 import gavel.template_filters # registers template filters
 
 import gavel.controllers # registers controllers
-
-# send usage stats
-import gavel.utils
-gavel.utils.send_telemetry('gavel-boot', {
-    'base-url': settings.BASE_URL or '',
-    'min-views': settings.MIN_VIEWS,
-    'timeout': settings.TIMEOUT,
-    'disable-email': settings.DISABLE_EMAIL
-})

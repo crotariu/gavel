@@ -57,8 +57,8 @@ def item():
         if data:
             # validate data
             for index, row in enumerate(data):
-                if len(row) != 3:
-                    return utils.user_error('Bad data: row %d has %d elements (expecting 3)' % (index + 1, len(row)))
+                if len(row) != 7:
+                    return utils.user_error('Bad data: row %d has %d elements (expecting 7)' % (index + 1, len(row)))
             for row in data:
                 _item = Item(*row)
                 db.session.add(_item)
@@ -118,6 +118,8 @@ def item_patch():
         item.name = request.form['name']
     if 'description' in request.form:
         item.description = request.form['description']
+    if 'video' in request.form:
+        item.video = request.form['video']
     db.session.commit()
     return redirect(url_for('item_detail', item_id=item.id))
 
