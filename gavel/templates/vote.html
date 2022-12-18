@@ -7,6 +7,9 @@
 {% block title %}Vote{% endblock %}
 
 {% block content %}
+<div>
+  <h2 style="text-align:center;font-weight:bold;color:#0063a3;">Votes: {{ votes }}</h2>
+</div>
 <form action="/vote" method="post">
 <div class="container">
   <div class="card-deck">

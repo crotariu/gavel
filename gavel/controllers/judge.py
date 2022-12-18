@@ -69,7 +69,8 @@ def index():
         elif annotator.prev is None:
             return render_template('begin.html', item=annotator.next)
         else:
-            return render_template('vote.html', prev=annotator.prev, next=annotator.next)
+            votes = Decision.query.filter_by(annotator_id=annotator.id).count()
+            return render_template('vote.html', prev=annotator.prev, next=annotator.next, votes=votes)
 
 @app.route('/vote', methods=['POST'])
 @requires_open(redirect_to='index')
