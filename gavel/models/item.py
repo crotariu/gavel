@@ -29,26 +29,12 @@ class Item(db.Model):
         self.name = name
         self.location = location
         self.description = description
-        self.video = video
+        self.video = Item.process_video_link(video)
         self.preso = preso
         self.folder = folder
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
         self.category = category
-
-        # Parse URL, if it's a Google file assume it's a video and reformat the URL
-        o = urlparse(video)
-        # If file link path starts with `/open`
-        if o.path.startswith('/open'):
-            id = o.query
-            self.video = 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
-        # Sharing link
-        elif o.path.startswith('/file'):
-            paths = o.path.split('/')
-            id = paths[3]
-            self.video = 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
-        else:
-            self.video = video
 
     @classmethod
     def by_id(cls, uid):
@@ -59,3 +45,20 @@ class Item(db.Model):
         except NoResultFound:
             item = None
         return item
+
+    @staticmethod
+    def process_video_link(link):
+        # Parse URL, if it's a Google file assume it's a video and reformat the URL
+        o = urlparse(link)
+        # If file link path starts with `/open`
+        if o.path.startswith('/open'):
+            id = o.query
+            return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+        # Sharing link
+        elif o.path.startswith('/file'):
+            paths = o.path.split('/')
+            id = paths[3]
+            return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+        else:
+            return link
+
