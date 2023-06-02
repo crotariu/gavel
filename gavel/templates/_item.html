@@ -21,6 +21,10 @@
     <p class="card-text">{{ item.description | safe }}</p>
   </div>
   <div class="card-footer">
+    <div>
+      <input type="checkbox" id="patentable" name="{{ patentable_value }}" value="{{ patentable_value }}"/>
+      <b><label for="patentable">Patentable?</label></b>
+    </div>
     Vote For
     <input type="submit" name="action" value="{{ btn_value | safe }}" class="btn btn-primary btn-block">
   </div>

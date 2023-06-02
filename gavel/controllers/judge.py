@@ -83,19 +83,23 @@ def vote():
                 annotator.ignore.append(annotator.next)
             else:
                 # ignore things that were deactivated in the middle of judging
-                if annotator.prev.active and annotator.next.active:
-                    if request.form['action'] == 'Previous':
-                        perform_vote(annotator, next_won=False)
-                        decision = Decision(annotator, winner=annotator.prev, loser=annotator.next)
-                    elif request.form['action'] == 'Current':
-                        perform_vote(annotator, next_won=True)
-                        decision = Decision(annotator, winner=annotator.next, loser=annotator.prev)
-                    db.session.add(decision)
-                annotator.next.viewed.append(annotator) # counted as viewed even if deactivated
-                annotator.prev = annotator.next
-                annotator.ignore.append(annotator.prev)
-            annotator.update_next(choose_next(annotator))
-            db.session.commit()
+                if request.form.getlist('Current'):
+                    annotator.next.patentable = True
+                if request.form.getlist('Previous'):
+                    annotator.prev.patentable = True
+            if annotator.prev.active and annotator.next.active:
+                if request.form['action'] == 'Previous':
+                    perform_vote(annotator, next_won=False)
+                    decision = Decision(annotator, winner=annotator.prev, loser=annotator.next)
+                elif request.form['action'] == 'Current':
+                    perform_vote(annotator, next_won=True)
+                    decision = Decision(annotator, winner=annotator.next, loser=annotator.prev)
+                db.session.add(decision)
+            annotator.next.viewed.append(annotator) # counted as viewed even if deactivated
+            annotator.prev = annotator.next
+            annotator.ignore.append(annotator.prev)
+        annotator.update_next(choose_next(annotator))
+        db.session.commit()
     with_retries(tx)
     return redirect(url_for('index'))
 
