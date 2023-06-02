@@ -82,6 +82,10 @@ def vote():
             annotator.ignore.append(annotator.next)
         else:
             # ignore things that were deactivated in the middle of judging
+            if request.form.getlist('Current'):
+                annotator.next.patentable = True
+            if request.form.getlist('Previous'):
+                annotator.prev.patentable = True
             if annotator.prev.active and annotator.next.active:
                 if request.form['action'] == 'Previous':
                     perform_vote(annotator, next_won=False)
