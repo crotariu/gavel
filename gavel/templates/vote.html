@@ -14,11 +14,11 @@
 <div class="container">
   <div class="card-deck">
 
-      {% with item=next, btn_value="Current" %}
+      {% with item=next, btn_value="Current", patentable_value="Current" %}
       {% include "_item.html" %}
       {% endwith %}
 
-      {% with item=prev, btn_value="Previous" %}
+      {% with item=prev, btn_value="Previous", patentable_value="Previous"  %}
       {% include "_item.html" %}
       {% endwith %}
   </div>
