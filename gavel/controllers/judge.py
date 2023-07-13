@@ -70,7 +70,9 @@ def index():
             return render_template('begin.html', item=annotator.next)
         else:
             votes = Decision.query.filter_by(annotator_id=annotator.id).count()
-            return render_template('vote.html', prev=annotator.prev, next=annotator.next, votes=votes)
+            prev_patentable_disabled = annotator in annotator.prev.patentable_voted
+            next_patentable_disabled = annotator in annotator.next.patentable_voted
+            return render_template('vote.html', prev=annotator.prev, next=annotator.next, votes=votes, prev_patentable_disabled=prev_patentable_disabled, next_patentable_disabled=next_patentable_disabled)
 
 @app.route('/vote', methods=['POST'])
 @requires_open(redirect_to='index')
@@ -84,9 +86,11 @@ def vote():
             else:
                 # ignore things that were deactivated in the middle of judging
                 if request.form.getlist('Current'):
-                    annotator.next.patentable = True
+                    annotator.next.patentable += 1
+                    annotator.next.patentable_voted.append(annotator)
                 if request.form.getlist('Previous'):
-                    annotator.prev.patentable = True
+                    annotator.prev.patentable += 1
+                    annotator.prev.patentable_voted.append(annotator)
             if annotator.prev.active and annotator.next.active:
                 if request.form['action'] == 'Previous':
                     perform_vote(annotator, next_won=False)
