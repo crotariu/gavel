@@ -22,7 +22,7 @@
   </div>
   <div class="card-footer">
     <div>
-      <input type="checkbox" id="patentable" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if item.patentable else ""}}" {{'disabled="disabled"' if item.patentable else ""}}/>
+      <input type="checkbox" id="patentable" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if patentable_status else ""}}" {{'disabled="disabled"' if patentable_status else ""}}/>
       <b><label for="patentable">Patentable?</label></b>
     </div>
     Vote For

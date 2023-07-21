@@ -9,6 +9,11 @@ view_table = db.Table('view',
     db.Column('annotator_id', db.Integer, db.ForeignKey('annotator.id'))
 )
 
+patentable_voted_table = db.Table('patentable_voted',
+    db.Column('item_id', db.Integer, db.ForeignKey('item.id')),
+    db.Column('annotator_id', db.Integer, db.ForeignKey('annotator.id'))
+)
+
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.Text, nullable=False)
@@ -21,7 +26,8 @@ class Item(db.Model):
     active = db.Column(db.Boolean, default=True, nullable=False)
     viewed = db.relationship('Annotator', secondary=view_table)
     prioritized = db.Column(db.Boolean, default=False, nullable=False)
-    patentable = db.Column(db.Boolean, default=False, nullable=False)
+    patentable = db.Column(db.Integer, default=0, nullable=False)
+    patentable_voted = db.relationship('Annotator', secondary=patentable_voted_table)
 
     mu = db.Column(db.Float)
     sigma_sq = db.Column(db.Float)

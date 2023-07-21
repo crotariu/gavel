@@ -74,6 +74,16 @@
         </td>
       </tr>
       <tr>
+        <th>Patentable By</th>
+        <td>
+          <ul>
+            {% for annotator in item.patentable_voted %}
+            <li><a href="{{ url_for('annotator_detail', annotator_id=annotator.id) }}" class="colored">{{ annotator.name | safe }} [{{ annotator.id }}]</a></li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+      <tr>
         <th>Assigned To</th>
         <td>
           <ul>
