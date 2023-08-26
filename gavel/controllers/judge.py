@@ -84,7 +84,7 @@ def vote():
             annotator.ignore.append(annotator.next)
         else:
             # ignore things that were deactivated in the middle of judging
-            if request.form.getlist('Current'):
+            if request.form.getlist('Current'): # Current and Previous here, has to do only with the pantentable checkbox
                 annotator.next.patentable += 1
                 annotator.next.patentable_voted.append(annotator)
             if request.form.getlist('Previous'):
