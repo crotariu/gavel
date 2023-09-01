@@ -23,59 +23,14 @@
   <div class="card-footer">
     <div class="row pt-2 pb-2">
       <div class="col-sm">
-        <input type="checkbox" id="patentable" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if patentable_status else ""}}" {{'disabled="disabled"' if patentable_status else ""}}/>
-        <b><label for="patentable">Patentable?</label></b>
+        <input type="checkbox" id="id{{ patentable_value }}" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if patentable_status else ""}}" {{'disabled="disabled"' if patentable_status else ""}}/>
+        <b><label for="id{{ patentable_value }}">Patentable?</label></b>
       </div>
       <div class="col-sm">
-        <input type="button" id="comment" name="comment00" value="Leave a comment" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal"/>
+        <input type="button" value="Leave a comment" class="btn btn-primary btn-block" data-toggle="modal" onclick="openModal('commentId{{ patentable_value }}')"/>
       </div>
 
-
-      <!-- Modal -->
-      <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Enter Text</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                   <!--  <input type="text" id="textInput" class="form-control" placeholder="Enter text..."> -->
-                   <textarea id="textAreaInput" rows="5" class="form-control" placeholder="Enter text..."></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveText()">Save</button>
-                </div>
-            </div>
-        </div>
-      </div>
-      <!-- Modal -->
-
-      <!-- Include Bootstrap 4.0.0 JS and jQuery -->
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-      <script>
-        function saveText() {
-            var userInput = document.getElementById('textAreaInput').value;
-            alert(userInput)
-            <!--
-            // Send userInput to the server using an AJAX request
-            $.ajax({
-                type: 'POST',
-                url: '/save_text',
-                data: { text: userInput },
-                success: function(response) {
-                    // Handle the response from the server if needed
-                    // For example, you can close the modal or display a message
-                    $('#myModal').modal('hide');
-                }
-            });
-          -->
-        }
-    </script>
-
+      <input type="hidden" id="commentId{{ patentable_value }}" name="comment{{ patentable_value }}" value="">
     </div>
     Vote For
     <input type="submit" name="action" value="{{ btn_value | safe }}" class="btn btn-primary btn-block">
