@@ -3,6 +3,7 @@
 {% block content %}
 <form action="/begin" method="post">
   <div class="container">
+    {% include 'modal.html' %}
     <div class="card-deck">
 
       {% with item=item, btn_value="Done"  %}

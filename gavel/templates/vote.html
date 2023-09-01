@@ -14,6 +14,7 @@
 </div>
 <form action="/vote" method="post">
 <div class="container">
+  {% include 'modal.html' %}
   <div class="card-deck">
 
       {% with item=next, btn_value="Current", patentable_value="Current", patentable_status=next_patentable_disabled %}
