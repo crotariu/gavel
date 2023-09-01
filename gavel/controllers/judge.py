@@ -10,6 +10,7 @@ from flask import (
     request,
     session,
     url_for,
+    escape,
 )
 from numpy.random import choice, random, shuffle
 from functools import wraps
@@ -91,19 +92,30 @@ def vote():
                 if request.form.getlist('Previous'):
                     annotator.prev.patentable += 1
                     annotator.prev.patentable_voted.append(annotator)
-            if annotator.prev.active and annotator.next.active:
-                if request.form['action'] == 'Previous':
-                    perform_vote(annotator, next_won=False)
-                    decision = Decision(annotator, winner=annotator.prev, loser=annotator.next)
-                elif request.form['action'] == 'Current':
-                    perform_vote(annotator, next_won=True)
-                    decision = Decision(annotator, winner=annotator.next, loser=annotator.prev)
-                db.session.add(decision)
-            annotator.next.viewed.append(annotator) # counted as viewed even if deactivated
-            annotator.prev = annotator.next
-            annotator.ignore.append(annotator.prev)
-        annotator.update_next(choose_next(annotator))
-        db.session.commit()
+
+                #check if we have any comments for projects
+                commentCurrent = escape(request.form.getlist('commentCurrent'))
+                if not commentCurrent:
+                    comment_current = Comments(annotator, annotator.next, commentCurrent)
+                    db.session.add(comment_current)
+                commentPrevious = escape(request.form.getlist('commentPrevious'))
+                if not commentPrevious:
+                    comment_previous = Comments(annotator, annotator.prev, commentPrevious)
+                    db.session.add(comment_previous)
+
+                if annotator.prev.active and annotator.next.active:
+                    if request.form['action'] == 'Previous':
+                        perform_vote(annotator, next_won=False)
+                        decision = Decision(annotator, winner=annotator.prev, loser=annotator.next)
+                    elif request.form['action'] == 'Current':
+                        perform_vote(annotator, next_won=True)
+                        decision = Decision(annotator, winner=annotator.next, loser=annotator.prev)
+                    db.session.add(decision)
+                annotator.next.viewed.append(annotator) # counted as viewed even if deactivated
+                annotator.prev = annotator.next
+                annotator.ignore.append(annotator.prev)
+            annotator.update_next(choose_next(annotator))
+            db.session.commit()
     with_retries(tx)
     return redirect(url_for('index'))
 
