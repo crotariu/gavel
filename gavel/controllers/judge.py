@@ -94,12 +94,12 @@ def vote():
 
             #check if we have any comments for projects
             commentCurrent = escape(request.form.getlist('commentCurrent'))
-            if not commentCurrent:
-                comment_current = Comments(annotator, annotator.next, commentCurrent)
+            if commentCurrent:
+                comment_current = Comments(annotator, item=annotator.next, comment=commentCurrent)
                 db.session.add(comment_current)
             commentPrevious = escape(request.form.getlist('commentPrevious'))
-            if not commentPrevious:
-                comment_previous = Comments(annotator, annotator.prev, commentPrevious)
+            if commentPrevious:
+                comment_previous = Comments(annotator, item=annotator.prev, comment=commentPrevious)
                 db.session.add(comment_previous)
 
             if annotator.prev.active and annotator.next.active:
