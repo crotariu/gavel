@@ -1,0 +1,45 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<script>
+  var commentId;
+
+  function openModal(id) {
+    commentId = id;
+    document.getElementById('textAreaInput').value = document.getElementById(id).value;
+    $('#myModal').modal('show');
+  }
+
+  function saveText() {
+    var userInput = document.getElementById('textAreaInput').value;
+    document.getElementById(commentId).value = userInput;
+    $('#myModal').modal('hide');
+  }
+</script>
+
+<!-- Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Leave a comment for the team:</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <textarea id="textAreaInput" rows="5" class="form-control" placeholder="Enter text..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveText()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  }
+</style>
+
+
+<!-- Modal -->

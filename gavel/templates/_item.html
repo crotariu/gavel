@@ -21,7 +21,7 @@
     <p class="card-text">{{ item.description | safe }}</p>
   </div>
   <div class="card-footer">
-    <div class="row pt-2 pb-2">
+    <div class="row pt-2 pb-2" style="{{ 'display: none;' if btn_value == 'Done' else '' }}">
       <div class="col-sm">
         <input type="checkbox" id="id{{ patentable_value }}" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if patentable_status else ""}}" {{'disabled="disabled"' if patentable_status else ""}}/>
         <b><label for="id{{ patentable_value }}">Patentable?</label></b>
