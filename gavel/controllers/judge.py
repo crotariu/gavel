@@ -10,6 +10,7 @@ from flask import (
     request,
     session,
     url_for,
+    escape,
 )
 from numpy.random import choice, random, shuffle
 from functools import wraps
@@ -90,6 +91,17 @@ def vote():
             if request.form.getlist('Previous'):
                 annotator.prev.patentable += 1
                 annotator.prev.patentable_voted.append(annotator)
+
+            #check if we have any comments for projects
+            commentCurrent = escape(request.form.getlist('commentCurrent'))
+            if not commentCurrent:
+                comment_current = Comments(annotator, annotator.next, commentCurrent)
+                db.session.add(comment_current)
+            commentPrevious = escape(request.form.getlist('commentPrevious'))
+            if not commentPrevious:
+                comment_previous = Comments(annotator, annotator.prev, commentPrevious)
+                db.session.add(comment_previous)
+
             if annotator.prev.active and annotator.next.active:
                 if request.form['action'] == 'Previous':
                     perform_vote(annotator, next_won=False)
