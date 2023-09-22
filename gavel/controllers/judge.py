@@ -94,13 +94,13 @@ def vote():
                     annotator.prev.patentable_voted.append(annotator)
 
             #check if we have any comments for projects
-            commentCurrent = escape(request.form.getlist('commentCurrent'))
+            commentCurrent = request.form.getlist('commentCurrent')
             if commentCurrent:
-                comment_current = Comments(annotator, item=annotator.next, comment=commentCurrent)
+                comment_current = Comments(annotator, item=annotator.next, comment=escape(commentCurrent))
                 db.session.add(comment_current)
-            commentPrevious = escape(request.form.getlist('commentPrevious'))
+            commentPrevious = request.form.getlist('commentPrevious')
             if commentPrevious:
-                comment_previous = Comments(annotator, item=annotator.prev, comment=commentPrevious)
+                comment_previous = Comments(annotator, item=annotator.prev, comment=escape(commentPrevious))
                 db.session.add(comment_previous)
 
                 if annotator.prev.active and annotator.next.active:
