@@ -21,9 +21,16 @@
     <p class="card-text">{{ item.description | safe }}</p>
   </div>
   <div class="card-footer">
-    <div>
-      <input type="checkbox" id="patentable" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if patentable_status else ""}}" {{'disabled="disabled"' if patentable_status else ""}}/>
-      <b><label for="patentable">Patentable?</label></b>
+    <div class="row pt-2 pb-2" style="{{ 'display: none;' if btn_value == 'Done' else '' }}">
+      <div class="col-sm">
+        <input type="checkbox" id="id{{ patentable_value }}" name="{{ patentable_value }}" value="{{ patentable_value }}" {{'checked="checked"' if patentable_status else ""}}" {{'disabled="disabled"' if patentable_status else ""}}/>
+        <b><label for="id{{ patentable_value }}">Patentable?</label></b>
+      </div>
+      <div class="col-sm">
+        <input type="button" value="Leave a comment" class="btn btn-primary btn-block" data-toggle="modal" onclick="openModal('commentId{{ patentable_value }}')"/>
+      </div>
+
+      <input type="hidden" id="commentId{{ patentable_value }}" name="comment{{ patentable_value }}" value="">
     </div>
     Vote For
     <input type="submit" name="action" value="{{ btn_value | safe }}" class="btn btn-primary btn-block">
