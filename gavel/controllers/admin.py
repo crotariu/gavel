@@ -61,10 +61,12 @@ def item():
             for index, row in enumerate(data):
                 if len(row) != 7:
                     return utils.user_error('Bad data: row %d has %d elements (expecting 7)' % (index + 1, len(row)))
-            for row in data:
-                _item = Item(*row)
-                db.session.add(_item)
-            db.session.commit()
+            def tx():
+                for row in data:
+                    _item = Item(*row)
+                    db.session.add(_item)
+                db.session.commit()
+            with_retries(tx)
     elif action == 'Prioritize' or action == 'Cancel':
         item_id = request.form['item_id']
         target_state = action == 'Prioritize'
@@ -132,7 +134,7 @@ def item_patch():
             item.description = request.form['description']
         if 'video' in request.form:
             item.video = Item.process_video_link(request.form['video'])
-    db.session.commit()
+        db.session.commit()
     with_retries(tx)
     return redirect(url_for('item_detail', item_id=item.id))
 
