@@ -10,6 +10,7 @@ from flask import (
     request,
     session,
     url_for,
+    escape,
 )
 from numpy.random import choice, random, shuffle
 from functools import wraps
@@ -69,7 +70,10 @@ def index():
         elif annotator.prev is None:
             return render_template('begin.html', item=annotator.next)
         else:
-            return render_template('vote.html', prev=annotator.prev, next=annotator.next)
+            votes = Decision.query.filter_by(annotator_id=annotator.id).count()
+            prev_patentable_disabled = annotator in annotator.prev.patentable_voted
+            next_patentable_disabled = annotator in annotator.next.patentable_voted
+            return render_template('vote.html', prev=annotator.prev, next=annotator.next, votes=votes, prev_patentable_disabled=prev_patentable_disabled, next_patentable_disabled=next_patentable_disabled)
 
 @app.route('/vote', methods=['POST'])
 @requires_open(redirect_to='index')
@@ -82,6 +86,23 @@ def vote():
                 annotator.ignore.append(annotator.next)
             else:
                 # ignore things that were deactivated in the middle of judging
+                if request.form.getlist('Current'): # Current and Previous here, has to do only with the pantentable checkbox
+                    annotator.next.patentable += 1
+                    annotator.next.patentable_voted.append(annotator)
+                if request.form.getlist('Previous'):
+                    annotator.prev.patentable += 1
+                    annotator.prev.patentable_voted.append(annotator)
+
+                #check if we have any comments for projects
+                commentCurrent = request.form.getlist('commentCurrent')
+                if commentCurrent:
+                    comment_current = Comments(annotator, item=annotator.next, comment=escape(commentCurrent))
+                    db.session.add(comment_current)
+                commentPrevious = request.form.getlist('commentPrevious')
+                if commentPrevious:
+                    comment_previous = Comments(annotator, item=annotator.prev, comment=escape(commentPrevious))
+                    db.session.add(comment_previous)
+
                 if annotator.prev.active and annotator.next.active:
                     if request.form['action'] == 'Previous':
                         perform_vote(annotator, next_won=False)

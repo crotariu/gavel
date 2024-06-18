@@ -1,25 +1,32 @@
-{% extends "layout.html" %}
-{% block title %}Vote{% endblock %}
-{% block content %}
-<div class="item">
-  <div class="banner-tight" id="previous-header">
-    <h1>Previous</h1>
-  </div>
-  <div id="previous-body">
-    {% with item=prev %}
-    {% include "_item.html" %}
-    {% endwith %}
-  </div>
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-<div class="item">
-  <div class="banner-tight" id="current-header">
-    <h1>Current</h1>
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock %}
+
+{% block title %}Vote{% endblock %}
+
+{% block content %}
+<div>
+  <h2 style="text-align:center;font-weight:bold;color:#0063a3;">Votes: {{ votes }}</h2>
+</div>
+<form action="/vote" method="post">
+<div class="container">
+  {% include 'modal.html' %}
+  <div class="card-deck">
+
+      {% with item=next, btn_value="Current", patentable_value="Current", patentable_status=next_patentable_disabled %}
+      {% include "_item.html" %}
+      {% endwith %}
+
+      {% with item=prev, btn_value="Previous", patentable_value="Previous",  patentable_status=prev_patentable_disabled  %}
+      {% include "_item.html" %}
+      {% endwith %}
   </div>
-  <div id="current-body">
-    {% with item=next %}
-    {% include "_item.html" %}
-    {% endwith %}
+  <div class="pt-4">
+    <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block">
   </div>
 </div>
 
@@ -51,6 +58,50 @@
       <input type="hidden" name="next_id" value="{{ next.id }}">
       <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
     </form>
+
+<script>
+  var commentId;
+
+  function openModal(id) {
+    commentId = id;
+    document.getElementById('textAreaInput').value = document.getElementById(id).value;
+    $('#myModal').modal('show');
+  }
+
+  function saveText() {
+    var userInput = document.getElementById('textAreaInput').value;
+    document.getElementById(commentId).value = userInput;
+    $('#myModal').modal('hide');
+  }
+</script>
+
+<!-- Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Leave a comment for the team:</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <textarea id="textAreaInput" rows="5" class="form-control" placeholder="Enter text..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveText()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  }
+</style>
+
+
+<!-- Modal -->
 
     <script src="{{ url_for('static', filename='js/smart-button-toggle.js') }}"></script>
   </div>
