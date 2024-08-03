@@ -55,17 +55,20 @@ class Item(db.Model):
 
     @staticmethod
     def process_video_link(link):
-        # Parse URL, if it's a Google file assume it's a video and reformat the URL
         o = urlparse(link)
-        # If file link path starts with `/open`
-        if o.path.startswith('/open'):
-            id = o.query
-            return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
-        # Sharing link
-        elif o.path.startswith('/file'):
+        
+        # Only accept links from Google Drive
+        # Return an empty string if the provided link is either not from Google Drive or it is not pointing to a video
+        # We assume that the link start with '/file
+        # We then can query the database for rows that have an empty video link
+        if o.netloc != 'drive.google.com':
+            return ''
+
+        # If file link path starts with `/file` add the /preview so that the video works embedded
+        if o.path.startswith('/file'):
             paths = o.path.split('/')
             id = paths[3]
-            return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+            return 'https://drive.google.com/file/d/' + id + '/preview'
         else:
-            return link
+            return ''
 
