@@ -67,3 +67,5 @@ Wait for a little bit and reload the page to try again.
 
 If you've looked at all the projects already, then you're done.
 '''.strip()
+
+GLOBAL_HACKATHON_NAME = 'Trimble Global Hackathon'

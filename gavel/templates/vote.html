@@ -4,14 +4,31 @@
 
 {% block styles %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+  .hack-name-header {
+    font-weight: bold;
+    color: #0063a3;
+}
+</style>
 {% endblock %}
 
 {% block title %}Vote{% endblock %}
 
 {% block content %}
-<div>
-  <h2 style="text-align:center;font-weight:bold;color:#0063a3;">Votes: {{ votes }}</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h3 class="text-left hack-name-header">{{ hackathon_name }}</h3>
+    </div>
+    <div class="col-md-4">
+      <h3 class="text-center hack-name-header">Votes: {{ votes }}</h3>
+    </div>
+    <div class="col-md-4">
+      <h3 class="text-right hack-name-header">{{ hackathon_name }}</h3>
+    </div>
+  </div>
 </div>
+
 <form action="/vote" method="post">
 <div class="container">
   {% include 'modal.html' %}
