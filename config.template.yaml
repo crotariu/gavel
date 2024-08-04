@@ -30,6 +30,9 @@ email_password: null
 # reasonably long random string.
 secret_key: null
 
+# diferentiate between Global Hackathon and Dreamer hack. Default is Global Hackathon
+hackathon_name: null
+
 #####################
 # Optional Settings #
 #####################

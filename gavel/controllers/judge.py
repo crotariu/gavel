@@ -72,7 +72,7 @@ def index():
             votes = Decision.query.filter_by(annotator_id=annotator.id).count()
             prev_patentable_disabled = annotator in annotator.prev.patentable_voted
             next_patentable_disabled = annotator in annotator.next.patentable_voted
-            return render_template('vote.html', prev=annotator.prev, next=annotator.next, votes=votes, prev_patentable_disabled=prev_patentable_disabled, next_patentable_disabled=next_patentable_disabled)
+            return render_template('vote.html',  hackathon_name=settings.HACKATHON_NAME, prev=annotator.prev, next=annotator.next, votes=votes, prev_patentable_disabled=prev_patentable_disabled, next_patentable_disabled=next_patentable_disabled)
 
 @app.route('/vote', methods=['POST'])
 @requires_open(redirect_to='index')
@@ -157,6 +157,7 @@ def login(secret):
 def welcome():
     return render_template(
         'welcome.html',
+        hackathon_name = settings.HACKATHON_NAME,
         content=utils.render_markdown(settings.WELCOME_MESSAGE)
     )
 
