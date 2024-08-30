@@ -70,9 +70,9 @@ def index():
             return render_template('begin.html', item=annotator.next)
         else:
             votes = Decision.query.filter_by(annotator_id=annotator.id).count()
-            prev_patentable_disabled = annotator in annotator.prev.patentable_voted
-            next_patentable_disabled = annotator in annotator.next.patentable_voted
-            return render_template('vote.html',  hackathon_name=settings.HACKATHON_NAME, prev=annotator.prev, next=annotator.next, votes=votes, prev_patentable_disabled=prev_patentable_disabled, next_patentable_disabled=next_patentable_disabled)
+            prev_patentable_status = annotator in annotator.prev.patentable_voted
+            # app.logger.info("Test logging....")
+            return render_template('vote.html',  hackathon_name=settings.HACKATHON_NAME, prev=annotator.prev, next=annotator.next, votes=votes, prev_patentable_status=prev_patentable_status)
 
 @app.route('/vote', methods=['POST'])
 @requires_open(redirect_to='index')
@@ -85,12 +85,13 @@ def vote():
                 annotator.ignore.append(annotator.next)
             else:
                 # ignore things that were deactivated in the middle of judging
-                if request.form.getlist('Current'): # Current and Previous here, has to do only with the pantentable checkbox
+                
+                # Current here, is reading the value of the patentable checkbox
+                # We don't have to read the patentable value for the previous project as the combbox is disabled for it
+                is_current_patentable = request.form.get('Current', '')               
+                if is_current_patentable == 'Yes': 
                     annotator.next.patentable += 1
                     annotator.next.patentable_voted.append(annotator)
-                if request.form.getlist('Previous'):
-                    annotator.prev.patentable += 1
-                    annotator.prev.patentable_voted.append(annotator)
 
                 #check if we have any comments for projects
                 commentCurrent = request.form.get('commentCurrent', '')
@@ -127,6 +128,18 @@ def begin():
         if annotator.next.id == int(request.form['item_id']):
             annotator.ignore.append(annotator.next)
             if request.form['action'] == 'Done':
+                # save the patentable status of the project
+                is_current_patentable = request.form.get('Current', '')               
+                if is_current_patentable == 'Yes': 
+                    annotator.next.patentable += 1
+                    annotator.next.patentable_voted.append(annotator)
+                
+                # save the comments for the project
+                commentCurrent = request.form.get('commentCurrent', '')
+                if commentCurrent:
+                    comment_current = Comments(annotator, item=annotator.next, comment=commentCurrent)
+                    db.session.add(comment_current)
+                    
                 annotator.next.viewed.append(annotator)
                 annotator.prev = annotator.next
                 annotator.update_next(choose_next(annotator))
