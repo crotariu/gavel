@@ -1,3 +1,5 @@
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 {% extends "layout.html" %}
 {% block title %}Start{% endblock %}
 {% block content %}
@@ -6,13 +8,13 @@
     {% include 'modal.html' %}
     <div class="card-deck">
 
-      {% with item=item, btn_value="Done"  %}
+      {% with item=item, btn_value="Done", patentable_value="Current", patentable_status="Select", disabled=False %}
       {% include "_item.html" %}
       {% endwith %}
 
     </div>
       <div class="pt-4">
-      <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block">
+      <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block" onclick="skipPatentableValidation('idCurrent');">
     </div>
   </div>
 

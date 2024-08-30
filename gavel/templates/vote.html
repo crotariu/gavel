@@ -1,4 +1,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 {% extends 'bootstrap/base.html' %}
 
@@ -34,16 +35,17 @@
   {% include 'modal.html' %}
   <div class="card-deck">
 
-      {% with item=next, btn_value="Current", patentable_value="Current", patentable_status=next_patentable_disabled %}
+      {% with item=next, btn_value="Current", patentable_value="Current", patentable_status="Select", disabled=False %}
       {% include "_item.html" %}
       {% endwith %}
 
-      {% with item=prev, btn_value="Previous", patentable_value="Previous",  patentable_status=prev_patentable_disabled  %}
+      {% set temp_patentable_status = 'Yes' if prev_patentable_status else 'No' %}
+      {% with item=prev, btn_value="Previous", patentable_value="Previous",  patentable_status=temp_patentable_status, disabled=True %}
       {% include "_item.html" %}
       {% endwith %}
   </div>
   <div class="pt-4">
-    <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block">
+    <input type="submit" name="action" value="Skip" class="btn btn-primary btn-block" onclick="skipPatentableValidation('idCurrent');">
   </div>
 </div>
 
