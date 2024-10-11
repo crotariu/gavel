@@ -57,18 +57,19 @@ class Item(db.Model):
     def process_video_link(link):
         o = urlparse(link)
         
-        # Only accept links from Google Drive
-        # Return an empty string if the provided link is either not from Google Drive or it is not pointing to a video
-        # We assume that the link start with '/file
-        # We then can query the database for rows that have an empty video link
-        if o.netloc != 'drive.google.com':
-            return ''
+        if o.netloc == 'drive.google.com':
+            # If file link path starts with `/file` add the /preview so that the video works embedded
+            if o.path.startswith('/file'):
+                paths = o.path.split('/')
+                id = paths[3]
+                return 'https://drive.google.com/file/d/' + id + '/preview'
+    
+        if o.netloc == 'docs.google.com':
+            # If file link path starts with `/video` a(Google vid))
+            if o.path.startswith('/video'):
+                paths = o.path.split('/')
+                id = paths[3]
+                return 'https://docs.google.com/videos/d/' + id + '/play'
 
-        # If file link path starts with `/file` add the /preview so that the video works embedded
-        if o.path.startswith('/file'):
-            paths = o.path.split('/')
-            id = paths[3]
-            return 'https://drive.google.com/file/d/' + id + '/preview'
-        else:
-            return ''
+        return '' 
 
