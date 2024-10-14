@@ -48,7 +48,7 @@
         <th>Video</th>
         <td>
           <textarea name="video" form="video_form">{{ item.video | safe }}</textarea>
-          <form action="/admin/item_patch" method="post" id="video_form">
+          <form action="{{ url_for('item_patch') }}" method="post" id="video_form">
             <input type="submit" name="action" value="Update" class="neutral">
             <input type="hidden" name="item_id" value="{{ item.id }}">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
