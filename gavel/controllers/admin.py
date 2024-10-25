@@ -204,11 +204,9 @@ def setting():
 @utils.requires_auth
 def item_detail(item_id):
     item = Item.by_id(item_id)
-    print("get item")
     if not item:
         return utils.user_error('Item %s not found ' % item_id)
     else:
-        print("else")
         assigned = Annotator.query.filter(Annotator.next == item).all()
         viewed_ids = {i.id for i in item.viewed}
         if viewed_ids:
@@ -217,7 +215,6 @@ def item_detail(item_id):
             )
         else:
             skipped = Annotator.query.filter(Annotator.ignore.contains(item))
-        print("before render")
         return render_template(
             'admin_item.html',
             item=item,
