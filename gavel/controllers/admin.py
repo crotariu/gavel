@@ -122,8 +122,8 @@ def parse_upload_form():
 @app.route('/admin/item_patch', methods=['POST'])
 @utils.requires_auth
 def item_patch():
-    def tx():
-        item = Item.by_id(request.form['item_id'])
+    item = Item.by_id(request.form['item_id'])
+    def tx():        
         if not item:
             return utils.user_error('Item %s not found ' % request.form['item_id'])
         if 'location' in request.form:
@@ -134,9 +134,9 @@ def item_patch():
             item.description = request.form['description']
         if 'video' in request.form:
             item.video = Item.process_video_link(request.form['video'])
-        db.session.commit()
-        return redirect(url_for('item_detail', item_id=item.id))
+        db.session.commit()        
     with_retries(tx)
+    return redirect(url_for('item_detail', item_id=item.id))
     
 @app.route('/admin/annotator', methods=['POST'])
 @utils.requires_auth
