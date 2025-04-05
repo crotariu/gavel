@@ -25,7 +25,6 @@
       <div class="col-sm">
         <b><label for="id{{ patentable_value }}">Patentable</label></b>
         <select id="id{{ patentable_value }}" name="{{ patentable_value }}" required {% if disabled %}disabled{% endif %} >
-          <option value="" {% if patentable_status == 'Select' %}selected{% endif %}>Select</option>
           <option value="Yes" {% if patentable_status == 'Yes' %}selected{% endif %}>Yes</option>
           <option value="No" {% if patentable_status == 'No' %}selected{% endif %}>No</option>
         </select>
