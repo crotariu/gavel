@@ -55,7 +55,7 @@ class Item(db.Model):
 
     @staticmethod
     def process_video_link(link):
-        o = urlparse(link)
+        o = urlparse(link.strip())
         
         if o.netloc == 'drive.google.com':
             # If file link path starts with `/file` add the /preview so that the video works embedded
