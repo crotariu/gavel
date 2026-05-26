@@ -30,4 +30,5 @@
         "flask"
     ],
     "name": "Gavel Judging System"
+    "stack": "heroku-22"
 }
