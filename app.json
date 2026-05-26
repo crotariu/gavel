@@ -29,6 +29,6 @@
         "python",
         "flask"
     ],
-    "name": "Gavel Judging System"
+    "name": "Gavel Judging System",
     "stack": "heroku-22"
 }
