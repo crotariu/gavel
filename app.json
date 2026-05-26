@@ -30,5 +30,9 @@
         "flask"
     ],
     "name": "Gavel Judging System",
-    "stack": "heroku-22"
+    "buildpacks": [
+       {
+         "url": "https://github.com/heroku/heroku-buildpack-python#v267"
+       }
+   ]
 }
