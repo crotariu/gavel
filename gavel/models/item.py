@@ -55,21 +55,17 @@ class Item(db.Model):
 
     @staticmethod
     def process_video_link(link):
-        o = urlparse(link.strip())
-        
-        if o.netloc == 'drive.google.com':
-            # If file link path starts with `/file` add the /preview so that the video works embedded
-            if o.path.startswith('/file'):
-                paths = o.path.split('/')
-                id = paths[3]
-                return 'https://drive.google.com/file/d/' + id + '/preview'
-    
-        if o.netloc == 'docs.google.com':
-            # If file link path starts with `/video` a(Google vid))
-            if o.path.startswith('/video'):
-                paths = o.path.split('/')
-                id = paths[3]
-                return 'https://docs.google.com/videos/d/' + id + '/play'
-
-        return '' 
+        # Parse URL, if it's a Google file assume it's a video and reformat the URL
+        o = urlparse(link)
+        # If file link path starts with `/open`
+        if o.path.startswith('/open'):
+            id = o.query
+            return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+        # Sharing link
+        elif o.path.startswith('/file'):
+            paths = o.path.split('/')
+            id = paths[3]
+            return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
+        else:
+            return link
 
