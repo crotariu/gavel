@@ -68,4 +68,5 @@ class Item(db.Model):
             return 'https://drive.google.com/file/d/' + id.strip('id=') + '/preview'
         else:
             return link
+    
 
